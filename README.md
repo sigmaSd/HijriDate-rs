@@ -4,11 +4,11 @@ Convert between hijri and Gregorian.
 
 # To do
 
-**Documentation**
+- [ ] **Documentation**
 
-**publish to crates.io**
+- [ ] **publish to crates.io**
 
-bugfixes,recheck algorithm,etc..
+- bugfixes,recheck algorithm,etc..
 
 
 # Credits
