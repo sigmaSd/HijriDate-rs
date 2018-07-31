@@ -14,7 +14,7 @@ Convert between hijri and Gregorian.
 # Credits
 I translated the python version https://github.com/tytkal/python-hijiri-ummalqura to rust.
 
-**Original Algorith author**
+**Original algorithm author**
 
 Suhail Alkowaileet 
 
