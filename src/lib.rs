@@ -57,7 +57,7 @@
 //! assert!(hd_1 > hd_2);
 //! ```
 //! 
-//!  *substract duration*
+//!  *substract duration from a day*
 //! 
 //! ```rust
 //! extern crate hijri_date;
@@ -67,6 +67,18 @@
 //! let hd_2 = HijriDate::from_hijri(1420, 05, 29);
 //! assert_eq!(hd_1 - Duration::days(16), hd_2);
 //! ```
+//! 
+//!  *substract a day from an other to get a duration*
+//! 
+//! ```rust
+//! extern crate hijri_date;
+//! use hijri_date::{Duration,HijriDate};
+//! 
+//! let hd_1 = HijriDate::from_hijri(1356, 06, 15);
+//! let hd_2 = HijriDate::from_hijri(1356, 06, 7);
+//! assert_eq!(hd_1-hd_2,Duration::days(8));
+//! ```
+//! 
 
 mod umalqura;
 use umalqura::*;
@@ -154,6 +166,14 @@ impl Sub<Duration> for HijriDate {
 
     fn sub(self, other: Duration) -> HijriDate {
         HijriDate::chrno_to_hijri(self.date_gr - other)
+    }
+}
+
+impl Sub<HijriDate> for HijriDate {
+    type Output = Duration;
+
+    fn sub(self, other: HijriDate) -> Duration {
+        self.date_gr - other.date_gr
     }
 }
 
