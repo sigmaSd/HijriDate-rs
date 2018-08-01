@@ -1,5 +1,5 @@
 [package]
-name = "hijri_date_rs"
+name = "hijri_date"
 version = "0.1.0"
 authors = ["Nbiba Bedis <bedisnbiba@gmail.com>"]
 

@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "hijri_date_rs"
+name = "hijri_date"
 version = "0.1.0"
 dependencies = [
  "chrono 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
