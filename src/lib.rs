@@ -56,29 +56,29 @@
 //! let hd_2 = HijriDate::from_hijri(1356, 1, 1);
 //! assert!(hd_1 > hd_2);
 //! ```
-//! 
+//!
 //!  *substract duration from a day*
-//! 
+//!
 //! ```rust
 //! extern crate hijri_date;
 //! use hijri_date::{Duration,HijriDate};
-//! 
+//!
 //! let hd_1 = HijriDate::from_hijri(1420, 06, 15);
 //! let hd_2 = HijriDate::from_hijri(1420, 05, 29);
 //! assert_eq!(hd_1 - Duration::days(16), hd_2);
 //! ```
-//! 
+//!
 //!  *substract a day from an other to get a duration*
-//! 
+//!
 //! ```rust
-//! extern crate hijri_date;
+//! extern crate hijri_date;    
 //! use hijri_date::{Duration,HijriDate};
-//! 
+//!
 //! let hd_1 = HijriDate::from_hijri(1356, 06, 15);
 //! let hd_2 = HijriDate::from_hijri(1356, 06, 7);
 //! assert_eq!(hd_1-hd_2,Duration::days(8));
 //! ```
-//! 
+//!
 
 mod umalqura;
 use umalqura::*;
@@ -234,7 +234,6 @@ impl HijriDate {
         let month_name = month_dict[&month].clone();
 
         let day_name_en = date_gr.format("%A").to_string();
-        //println!("{}", &day_name_en);
         let day_name = day_dict[&day_name_en].clone();
         let month_name_gr = date_gr.format("%B").to_string();
 

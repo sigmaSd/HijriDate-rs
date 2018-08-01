@@ -50,6 +50,13 @@ fn add_sub() {
 }
 
 #[test]
+fn sub_day() {
+    let hd_1 = HijriDate::from_hijri(1356, 06, 15);
+    let hd_2 = HijriDate::from_hijri(1356, 06, 7);
+    assert_eq!(hd_1-hd_2,Duration::days(8));
+}
+
+#[test]
 #[should_panic]
 fn invalid() {
     //let hd_1 = HijriDate::from_hijri(1301, 06, 15);
