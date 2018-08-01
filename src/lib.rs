@@ -4,13 +4,15 @@
 //! Convert between hijri and gregorian date.
 //!
 //! The algorithm used to convert between dates is limited to:
-//!     
-//!    minimum handled hijri year = 1356
-//!    maximum handled hijri year = 1500
 //!
-//!    minimum handled gregorian year = 1938
-//!    maximum handled gregorian year = 2076
+//! ```text     
+//! minimum handled hijri year = 1356
+//! maximum handled hijri year = 1500
 //!
+//! minimum handled gregorian year = 1938
+//! maximum handled gregorian year = 2076
+//!```
+//! 
 //! ## Usage
 //!
 //! *convert to gregorian*
