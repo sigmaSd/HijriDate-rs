@@ -1,3 +1,4 @@
+// In the name of Allah
 
 //! # HijriDate-rs 0.1.0
 //!
@@ -11,8 +12,8 @@
 //!
 //! minimum handled gregorian year = 1938
 //! maximum handled gregorian year = 2076
-//!```
-//! 
+//! ```
+//!
 //! ## Usage
 //!
 //! *convert to gregorian*
@@ -43,7 +44,7 @@
 //!
 //! let hd = HijriDate::from_hijri(1439,11,18);
 //! println!("{} {} {}",hd.year,hd.month_name,hd.day_name);
-//!```
+//! ```
 //!
 //! *compare dates*
 //!
@@ -54,7 +55,18 @@
 //! let hd_1 = HijriDate::from_hijri(1500, 12, 30);
 //! let hd_2 = HijriDate::from_hijri(1356, 1, 1);
 //! assert!(hd_1 > hd_2);
-//!```
+//! ```
+//! 
+//!  *substract duration*
+//! 
+//! ```rust
+//! extern crate hijri_date;
+//! use hijri_date::{Duration,HijriDate};
+//! 
+//! let hd_1 = HijriDate::from_hijri(1420, 06, 15);
+//! let hd_2 = HijriDate::from_hijri(1420, 05, 29);
+//! assert_eq!(hd_1 - Duration::days(16), hd_2);
+//! ```
 
 mod umalqura;
 use umalqura::*;
@@ -64,10 +76,12 @@ mod umalqura_array;
 extern crate lazy_static;
 
 extern crate chrono;
+pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use std::ops::{Add, Sub};
 
 lazy_static! {
     static ref month_dict: HashMap<usize, String> = [
@@ -123,26 +137,30 @@ pub struct HijriDate {
     pub year_gr: usize,
     pub day_name_en: String,
     pub month_name_gr: String,
+    // needed to ease trait impl(add,sub,partialeq..)
+    date_gr: Date<Utc>,
 }
+
+impl Add<Duration> for HijriDate {
+    type Output = HijriDate;
+
+    fn add(self, other: Duration) -> HijriDate {
+        HijriDate::chrno_to_hijri(self.date_gr + other)
+    }
+}
+
+impl Sub<Duration> for HijriDate {
+    type Output = HijriDate;
+
+    fn sub(self, other: Duration) -> HijriDate {
+        HijriDate::chrno_to_hijri(self.date_gr - other)
+    }
+}
+
 impl PartialOrd for HijriDate {
     //use chrono to implement cmp
     fn partial_cmp(&self, other: &HijriDate) -> Option<Ordering> {
-        //self
-        let date_gr = format!("{}-{}-{}", self.year_gr, self.month_gr, self.day_gr);
-        let date_gr = Date::<Utc>::from_utc(
-            NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d").unwrap(),
-            Utc,
-        );
-
-        //other
-        let other_date_gr = format!("{}-{}-{}", other.year_gr, other.month_gr, other.day_gr);
-        let other_date_gr = Date::<Utc>::from_utc(
-            NaiveDate::parse_from_str(&other_date_gr, "%Y-%m-%d").unwrap(),
-            Utc,
-        );
-
-        //cmp
-        Some(date_gr.cmp(&other_date_gr))
+        Some(self.date_gr.cmp(&other.date_gr))
     }
 }
 
@@ -178,6 +196,7 @@ impl HijriDate {
             year_gr,
             day_name_en,
             month_name_gr,
+            date_gr,
         }
     }
     /// get data from gregorian date.
@@ -213,18 +232,24 @@ impl HijriDate {
             year_gr,
             day_name_en,
             month_name_gr,
+            date_gr,
         }
     }
     /// get data from today's date.
     pub fn today() -> Self {
         let today = Utc::today();
+
+        Self::chrno_to_hijri(today)
+    }
+
+    //helper method
+    fn chrno_to_hijri(date: Date<Utc>) -> Self {
         let (year_gr, month_gr, day_gr): (usize, usize, usize) = (
-            today.format("%Y").to_string().parse().unwrap(),
-            today.format("%m").to_string().parse().unwrap(),
-            today.format("%d").to_string().parse().unwrap(),
+            date.format("%Y").to_string().parse().unwrap(),
+            date.format("%m").to_string().parse().unwrap(),
+            date.format("%d").to_string().parse().unwrap(),
         );
-        //println!("{}-{}-{}", year_gr, month_gr, day_gr);
-        Self::from_gr(year_gr, month_gr, day_gr)
+        HijriDate::from_gr(year_gr, month_gr, day_gr)
     }
 }
 
@@ -258,61 +283,4 @@ fn valid_greorian_date(year_gr: usize, month_gr: usize, day_gr: usize) {
     if year_gr > 2076 {
         panic!("maximum handled gregorian year is 2076");
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn dates() {
-        let hd_g = HijriDate::from_gr(2000, 07, 31);
-        let date = format!("{}-{}-{}", hd_g.year, hd_g.month, hd_g.day);
-        assert_eq!("1421-4-29", date);
-
-        let hd = HijriDate::from_hijri(1400, 11, 19);
-        let date = format!("{}-{}-{}", hd.year_gr, hd.month_gr, hd.day_gr);
-        assert_eq!("1980-9-28", date);
-    }
-    #[test]
-    fn max_min() {
-        //min value //to be precise 1937,03,14
-        let hd_g = HijriDate::from_gr(1938, 01, 01);
-        //println!("{}-{}-{}",hd_g.year,hd_g.month,hd_g.day);
-        let hd = HijriDate::from_hijri(1356, 1, 1);
-        //assert_eq!(hd,hd_g);
-
-        //max value //to be precise 2077,11,16
-        let hd_g = HijriDate::from_gr(2076, 12, 31);
-        //println!("{:?}",hd_g);
-        let hd = HijriDate::from_hijri(1500, 12, 30);
-
-        //assert_eq!(hd,hd_g);
-    }
-
-    #[test]
-    fn cmp() {
-        let hd_1 = HijriDate::from_hijri(1500, 12, 30);
-        let hd_2 = HijriDate::from_hijri(1356, 1, 1);
-        assert!(hd_1 > hd_2);
-
-        let hd_1 = HijriDate::from_hijri(1420, 06, 15);
-        let hd_2 = HijriDate::from_hijri(1410, 12, 01);
-        assert!(hd_1 > hd_2);
-    }
-    #[test]
-    fn arabic() {
-        let hd = HijriDate::from_hijri(1420, 06, 15);
-        println!("{} {}", hd.day_name, hd.month_name);
-    }
-
-    #[test]
-    #[should_panic]
-    fn invalid() {
-        //let hd_1 = HijriDate::from_hijri(1301, 06, 15);
-        //let hd_1 = HijriDate::from_hijri(1401, 06, 1500);
-        //let hd_g = HijriDate::from_gr(2077, 11 ,16);
-        let hd_g = HijriDate::from_gr(1935, 11, 16);
-    }
-
 }
