@@ -1,5 +1,4 @@
-Rust HijriDate
-=====================
+# Rust HijriDate
 
 **Rust HijriDate** provides functionality for conversion between hijri and gregorian calanders.
 
