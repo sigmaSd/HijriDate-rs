@@ -1,4 +1,5 @@
-# HijriDate-rs
+Rust HijriDate
+=====================
 
 Convert between hijri and Gregorian date.
 
