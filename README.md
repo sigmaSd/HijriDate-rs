@@ -4,7 +4,7 @@ Convert between hijri and Gregorian date.
 
 # To do
 
-- [ ] **Documentation**
+- [x]  **Documentation**
 
 - [ ] **publish to crates.io**
 
