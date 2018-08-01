@@ -163,7 +163,6 @@ impl HijriDate {
     }
 }
 
-//validate date and output month len in case of valid input
 fn valid_hijri_date(year: usize, month: usize, day: usize) {
     if month > 12 {
         panic!("enter a valid month, Err m = {}", month);
