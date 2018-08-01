@@ -7,6 +7,7 @@ extern crate lazy_static;
 
 extern crate chrono;
 use chrono::{Date, NaiveDate, Utc};
+
 use std::cmp::Ordering;
 use std::collections::HashMap;
 
@@ -25,9 +26,9 @@ lazy_static! {
         (11, "ذو القعدة"),
         (12, "ذو الحجة")
     ]
-        .iter()
-        .cloned()
-        .map(|(n, s)| (n, s.to_string()))
+        .into_iter()
+                            //hack to correct letters order ; need to be handled
+        .map(|(n, s)| (*n, s.chars().rev().collect()))
         .collect();
     static ref day_dict: HashMap<String, String> = [
         ("Saturday", "السبت"),
@@ -39,8 +40,8 @@ lazy_static! {
         ("Friday", "الجمعة")
     ]
         .iter()
-        .cloned()
-        .map(|(e, a)| (e.to_string(), a.to_string()))
+                            //hack to correct letters order ; need to be handled
+        .map(|(e, a)| (e.to_string(), a.chars().rev().collect()))
         .collect();
 }
 
@@ -234,6 +235,12 @@ mod tests {
         let hd_2 = HijriDate::from_hijri(1410, 12, 01);
         assert!(hd_1 > hd_2);
     }
+    #[test]
+    fn arabic() {
+        let hd = HijriDate::from_hijri(1420, 06, 15);
+        println!("{} {}", hd.day_name, hd.month_name);
+    }
+
     #[test]
     #[should_panic]
     fn invalid() {
