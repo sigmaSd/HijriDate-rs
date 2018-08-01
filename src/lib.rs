@@ -1,6 +1,61 @@
+//! # HijriDate-rs 0.1.0
+//!
+//! Convert between hijri and gregorian date.
+//!
+//! The algorithm used to convert between dates is limited to:
+//!     
+//!     minimum handled hijri year = 1356
+//!     maximum handled hijri year = 1500
+//!
+//!     minimum handled gregorian year = 1938
+//!     maximum handled gregorian year = 2076
+//!
+//! ## Usage
+//!
+//! *convert to gregorian*
+//!
+//! ```rust
+//! extern crate hijri_date;
+//! use hijri_date::HijriDate;
+//!
+//! let hd = HijriDate::from_hijri(1439,11,19);
+//! assert_eq!((2018,8,1),(hd.year_gr,hd.month_gr,hd.day_gr));
+//! ```
+//!
+//! *convert to hijri*
+//!
+//! ```rust
+//! extern crate hijri_date;
+//! use hijri_date::HijriDate;
+//!
+//! let hd = HijriDate::from_gr(2000,07,31);
+//! assert_eq!((1421,4,29),(hd.year,hd.month,hd.day));
+//! ```
+//!
+//! *hijri day and month name*
+//!
+//! ```rust
+//! extern crate hijri_date;
+//! use hijri_date::HijriDate;
+//!
+//! let hd = HijriDate::from_hijri(1439,11,18);
+//! println!("{} {} {}",hd.year,hd.month_name,hd.day_name);
+//!```
+//!
+//! *compare dates*
+//!
+//! ```rust
+//! extern crate hijri_date;
+//! use hijri_date::HijriDate;
+//!
+//! let hd_1 = HijriDate::from_hijri(1500, 12, 30);
+//! let hd_2 = HijriDate::from_hijri(1356, 1, 1);
+//! assert!(hd_1 > hd_2);
+//!```
+
 mod umalqura;
 use umalqura::*;
-pub mod umalqura_array;
+mod umalqura_array;
 
 #[macro_use]
 extern crate lazy_static;
@@ -45,22 +100,26 @@ lazy_static! {
         .collect();
 }
 
+///Main structure.
+///  - Contains numeric value of hijri and gregorian dates plus hijri month and day names.
+///  - Hijri names dosent have suffix, example (day,month,year,..)
+///  - Gregorian names are denoted with `gr` or `en` suffix.
 #[derive(Debug, PartialEq)]
 pub struct HijriDate {
     //hijri
-    day: usize,
-    month: usize,
-    month_len: usize,
-    year: usize,
-    day_name: String,
-    month_name: String,
+    pub day: usize,
+    pub month: usize,
+    pub month_len: usize,
+    pub year: usize,
+    pub day_name: String,
+    pub month_name: String,
 
     //gregorian
-    day_gr: usize,
-    month_gr: usize,
-    year_gr: usize,
-    day_name_en: String,
-    month_name_gr: String,
+    pub day_gr: usize,
+    pub month_gr: usize,
+    pub year_gr: usize,
+    pub day_name_en: String,
+    pub month_name_gr: String,
 }
 impl PartialOrd for HijriDate {
     //use chrono to implement cmp
@@ -85,6 +144,7 @@ impl PartialOrd for HijriDate {
 }
 
 impl HijriDate {
+    /// get data from hijri date
     pub fn from_hijri(year: usize, month: usize, day: usize) -> Self {
         valid_hijri_date(year, month, day);
 
@@ -117,6 +177,7 @@ impl HijriDate {
             month_name_gr,
         }
     }
+    /// get data from gregorian date.
     pub fn from_gr(year_gr: usize, month_gr: usize, day_gr: usize) -> Self {
         valid_greorian_date(year_gr, month_gr, day_gr);
 
@@ -151,7 +212,7 @@ impl HijriDate {
             month_name_gr,
         }
     }
-
+    /// get data from today's date.
     pub fn today() -> Self {
         let today = Utc::today();
         let (year_gr, month_gr, day_gr): (usize, usize, usize) = (
@@ -222,6 +283,7 @@ mod tests {
         let hd_g = HijriDate::from_gr(2076, 12, 31);
         //println!("{:?}",hd_g);
         let hd = HijriDate::from_hijri(1500, 12, 30);
+
         //assert_eq!(hd,hd_g);
     }
 
