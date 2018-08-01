@@ -1,14 +1,16 @@
-# HijriDate-rs
+# Rust HijriDate
 
-Convert between hijri and Gregorian date.
+**Rust HijriDate** provides functionality for conversion between hijri and gregorian calanders.
+
+The crate name is `hijri_date`.
 
 # To do
 
-- [ ] **Documentation**
+- [x]  **Documentation**
 
 - [ ] **publish to crates.io**
 
-- bugfixes,recheck algorithm,etc..
+- bugfixes, recheck algorithm, etc..
 
 # Important
 
