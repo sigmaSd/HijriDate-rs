@@ -1,6 +1,6 @@
 # HijriDate-rs
 
-Convert between hijri and Gregorian.
+Convert between hijri and Gregorian date.
 
 # To do
 
