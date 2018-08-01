@@ -8,11 +8,7 @@ The crate name is `hijri_date`.
 
 # To do
 
-- [x]  **Documentation**
-
-- [x] **publish to crates.io**
-
-- bugfixes, recheck algorithm, etc..
+- [ ] **formatting**
 
 # Important
 
