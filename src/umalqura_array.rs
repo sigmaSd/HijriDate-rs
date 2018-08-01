@@ -1,7 +1,7 @@
 
-pub fn umalqura_index(mcjdn: f32) -> usize {
+pub fn umalqura_index(mcjdn: f64) -> usize {
     for (i, umalqura) in UMALQURA_DAT.iter().enumerate() {
-        if *umalqura as f32 > mcjdn {
+        if *umalqura as f64 > mcjdn {
             return i 
         } 
     }

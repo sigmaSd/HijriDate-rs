@@ -12,16 +12,16 @@ pub fn gegorean_to_hijri(mut year_gr: usize,mut month_gr: usize, day_gr: usize) 
     }
 
     //determine offset between Julian and Gregorian calendar
-    let a = (year_gr/100) as f32;
+    let a = (year_gr/100) as f64;
     let jgc = a - a/4.0 -2.0;
-    let (y,m,d) = (year_gr as f32, month_gr as f32, day_gr as f32) ;
+    let (y,m,d) = (year_gr as f64, month_gr as f64, day_gr as f64) ;
     //compute Chronological Julian Day Number (CJDN)
     let cjdn = (365.25 * (y + 4716.0)).floor()
                 + (30.6001 * (m + 1.0)).floor()
                 + d - jgc -1524.0;
 
     // compute Modified Chronological Julian Day Number (MCJDN)
-    let mcjdn = cjdn - 2400000.0;
+    let mcjdn = cjdn - 2_400_000.0;
     
     let index = umalqura_index(mcjdn);
 
@@ -30,7 +30,7 @@ pub fn gegorean_to_hijri(mut year_gr: usize,mut month_gr: usize, day_gr: usize) 
     let ii = (iln - 1) / 12;
     let iy = ii + 1;
     let im = iln - 12 * ii;
-    let id = mcjdn - UMALQURA_DAT[index - 1] as f32  + 1.0;
+    let id = mcjdn - UMALQURA_DAT[index - 1] as f64  + 1.0;
     let ml = UMALQURA_DAT[index] - UMALQURA_DAT[index -1];
 
     (iy, im, id as usize, ml)
@@ -42,16 +42,16 @@ pub fn hijri_to_gregorian(year:usize, month:usize, day:usize) -> (usize,usize,us
     let iln = (ii*12) + 1 + (month - 1);
     let i :usize = iln - 16260;
     let mcjdn = day + UMALQURA_DAT[i - 1] - 1;
-    let cjdn = mcjdn +  2400000;
+    let cjdn = mcjdn +  2_400_000;
 
-    julian_to_gregorian(cjdn as f32)
+    julian_to_gregorian(cjdn as f64)
 }
 
-fn julian_to_gregorian(cjdn: f32) -> (usize,usize,usize) {
+fn julian_to_gregorian(cjdn: f64) -> (usize,usize,usize) {
     //source from: http://keith-wood.name/calendars.html
 
     let z = (cjdn + 0.5).floor();
-    let a = ((z - 1867216.25) / 36524.25).floor();
+    let a = ((z - 1_867_216.25) / 36524.25).floor();
     let a = z + 1.0 + a - (a / 4.0).floor();
     let b = a + 1524.0;
     let c = ((b - 122.1) / 365.25).floor();

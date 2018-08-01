@@ -198,7 +198,6 @@ fn valid_greorian_date(year_gr: usize, month_gr: usize, day_gr: usize) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    extern crate reqwest;
 
     #[test]
     fn dates() {
@@ -243,7 +242,5 @@ mod tests {
         //let hd_g = HijriDate::from_gr(2077, 11 ,16);
         let hd_g = HijriDate::from_gr(1935, 11, 16);
     }
-    #[test]
-    fn today() {}
 
 }
