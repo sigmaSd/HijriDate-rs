@@ -43,7 +43,7 @@
 //! use hijri_date::HijriDate;
 //!
 //! let hd = HijriDate::from_hijri(1439,11,18);
-//! println!("{} {} {}",hd.year,hd.month_name,hd.day_name);
+//! println!("{}",hd.format("%Y %M %D"));
 //! ```
 //!
 //! *compare dates*
@@ -93,6 +93,7 @@ use chrono::{Date, NaiveDate, Utc};
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use std::fmt;
 use std::ops::{Add, Sub};
 
 lazy_static! {
@@ -148,9 +149,18 @@ pub struct HijriDate {
     pub month_gr: usize,
     pub year_gr: usize,
     pub day_name_en: String,
-    pub month_name_gr: String,
+    pub month_name_en: String,
     // needed to ease trait impl(add,sub,partialeq..)
     date_gr: Date<Utc>,
+}
+
+impl fmt::Display for HijriDate {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        writeln!(f, "{}", &self.format("%Y %M %D"))?;
+        writeln!(f, "{}", &self.format("%gD %gM %gY"))?;
+
+        Ok(())
+    }
 }
 
 impl Add<Duration> for HijriDate {
@@ -199,7 +209,7 @@ impl HijriDate {
         };
         let day_name_en = date_gr.format("%A").to_string();
         let day_name = day_dict[&day_name_en].clone();
-        let month_name_gr = date_gr.format("%B").to_string();
+        let month_name_en = date_gr.format("%B").to_string();
         let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
 
         Self {
@@ -215,7 +225,7 @@ impl HijriDate {
             month_gr,
             year_gr,
             day_name_en,
-            month_name_gr,
+            month_name_en,
             date_gr,
         }
     }
@@ -235,9 +245,10 @@ impl HijriDate {
 
         let day_name_en = date_gr.format("%A").to_string();
         let day_name = day_dict[&day_name_en].clone();
-        let month_name_gr = date_gr.format("%B").to_string();
+        let month_name_en = date_gr.format("%B").to_string();
 
         Self {
+            //hijri
             day,
             month,
             month_len,
@@ -250,7 +261,7 @@ impl HijriDate {
             month_gr,
             year_gr,
             day_name_en,
-            month_name_gr,
+            month_name_en,
             date_gr,
         }
     }
@@ -269,6 +280,40 @@ impl HijriDate {
             date.format("%d").to_string().parse().unwrap(),
         );
         HijriDate::from_gr(year_gr, month_gr, day_gr)
+    }
+
+    /// Returns a representation of HijriDate defined by the given formatter
+    ///
+    /// ```text
+    ///        hijri
+    ///
+    ///     %Y              hijri_year
+    ///     %m              hijri_month
+    ///     %d              hijri_day
+    ///     %D              hijri_day_name
+    ///     %M              hijri_month_name
+    ///     %l              hijri_month_len
+    ///
+    ///        gregorian
+    ///     
+    ///     %gY             gregorian_year
+    ///     %gm             gregorian_month
+    ///     %gd             gregorian_day
+    ///     %gD             gregorian_day_name
+    ///     %gM             gregorian_month_name
+    /// ```
+    pub fn format(&self, f: &str) -> String {
+        f.replace("%Y", &self.year.to_string())
+            .replace("%m", &self.month.to_string())
+            .replace("%d", &self.day.to_string())
+            .replace("%D", &self.day_name)
+            .replace("%M", &self.month_name)
+            .replace("l", &self.month_len.to_string())
+            .replace("%gY", &self.year_gr.to_string())
+            .replace("%gm", &self.month_gr.to_string())
+            .replace("%gd", &self.day_gr.to_string())
+            .replace("%gD", &self.day_name_en)
+            .replace("%gM", &self.month_name_en)
     }
 }
 

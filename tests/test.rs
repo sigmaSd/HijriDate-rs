@@ -57,6 +57,12 @@ fn sub_day() {
 }
 
 #[test]
+fn fmt() {
+    let hd_2 = HijriDate::from_hijri(1356, 06, 7);
+    assert_eq!("1356-6-7",hd_2.format("%Y-%m-%d") );
+}
+
+#[test]
 #[should_panic]
 fn invalid() {
     //let hd_1 = HijriDate::from_hijri(1301, 06, 15);
