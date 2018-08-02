@@ -1,7 +1,8 @@
 [package]
 name = "hijri_date"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Nbiba Bedis <bedisnbiba@gmail.com>"]
+readme = "README.md"
 description = "provides functionality for conversion between hijri and gregorian calander"
 repository =  "https://github.com/sigmaSd/HijriDate-rs"
 license = "MIT"
