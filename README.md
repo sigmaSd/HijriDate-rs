@@ -8,7 +8,7 @@ The crate name is `hijri_date`.
 
 # To do
 
-- [ ] **formatting**
+- [x] **formatting**
 
 # Important
 
