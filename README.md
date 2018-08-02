@@ -111,3 +111,5 @@ Suhail Alkowaileet
 **Python version author**
 
 Khalid Al-hussayen
+
+[Chrono](https://github.com/chronotope/chrono)
