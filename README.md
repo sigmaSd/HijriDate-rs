@@ -1,12 +1,12 @@
- # HijriDate-rs 0.1.3
+ # HijriDate-rs 0.1.4
 
-[Documentation](https://docs.rs/hijri_date/0.1.1/hijri_date/)
+[Documentation](https://docs.rs/hijri_date/)
 
 Convert between hijri and gregorian date.
 
  The algorithm used to convert between dates is limited to:
 
- ```text     
+ ```     
  minimum handled hijri year = 1356
  maximum handled hijri year = 1500
 
@@ -78,6 +78,27 @@ Convert between hijri and gregorian date.
  let hd_2 = HijriDate::from_hijri(1356, 06, 7);
  assert_eq!(hd_1-hd_2,Duration::days(8));
  ```
+
+ *formating guide*
+
+    
+        hijri
+
+        %Y              hijri_year
+        %m              hijri_month
+        %d              hijri_day
+        %D              hijri_day_name
+        %M              hijri_month_name
+        %l              hijri_month_len
+
+        gregorian
+        
+        %gY             gregorian_year
+        %gm             gregorian_month
+        %gd             gregorian_day
+        %gD             gregorian_day_name
+        %gM             gregorian_month_name
+    
 
 
 # Credits
