@@ -1,6 +1,6 @@
 // In the name of Allah
 
-//! # HijriDate-rs 0.1.0
+//! # HijriDate-rs 0.1.4
 //!
 //! Convert between hijri and gregorian date.
 //!
