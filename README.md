@@ -4,13 +4,11 @@
 
 The crate name is `hijri_date`.
 
+[Documentation](https://docs.rs/hijri_date/0.1.1/hijri_date/)
+
 # To do
 
-- [x]  **Documentation**
-
-- [ ] **publish to crates.io**
-
-- bugfixes, recheck algorithm, etc..
+- [ ] **formatting**
 
 # Important
 
