@@ -1,4 +1,4 @@
- # HijriDate-rs 0.1.4
+ # HijriDate-rs 
 
 [Documentation](https://docs.rs/hijri_date/)
 

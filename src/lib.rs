@@ -1,6 +1,6 @@
 // In the name of Allah
 
-//! # HijriDate-rs 0.1.4
+//! # HijriDate-rs 
 //!
 //! Convert between hijri and gregorian date.
 //!
@@ -87,6 +87,9 @@ mod umalqura_array;
 #[macro_use]
 extern crate lazy_static;
 
+extern crate arabic_reshaper;
+use arabic_reshaper::arabic_reshape_l;
+
 extern crate chrono;
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
@@ -112,8 +115,7 @@ lazy_static! {
         (12, "ذو الحجة")
     ]
         .into_iter()
-                            //hack to correct letters order ; need to be handled
-        .map(|(n, s)| (*n, s.chars().rev().collect()))
+        .map(|(n, s)| (*n, arabic_reshape_l(s)))
         .collect();
     static ref day_dict: HashMap<String, String> = [
         ("Saturday", "السبت"),
@@ -125,8 +127,7 @@ lazy_static! {
         ("Friday", "الجمعة")
     ]
         .iter()
-                            //hack to correct letters order ; need to be handled
-        .map(|(e, a)| (e.to_string(), a.chars().rev().collect()))
+        .map(|(e, a)| (e.to_string(), arabic_reshape_l(a)))
         .collect();
 }
 
