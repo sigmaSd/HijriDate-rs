@@ -14,15 +14,15 @@ fn dates() {
 #[test]
 fn max_min() {
     //min value //to be precise 1937,03,14
-    let hd_g = HijriDate::from_gr(1938, 01, 01);
+    let _hd_g = HijriDate::from_gr(1938, 01, 01);
     //println!("{}-{}-{}",hd_g.year,hd_g.month,hd_g.day);
-    let hd = HijriDate::from_hijri(1356, 1, 1);
+    let _hd = HijriDate::from_hijri(1356, 1, 1);
     //assert_eq!(hd,hd_g);
 
     //max value //to be precise 2077,11,16
-    let hd_g = HijriDate::from_gr(2076, 12, 31);
+    let _hd_g = HijriDate::from_gr(2076, 12, 31);
     //println!("{:?}",hd_g);
-    let hd = HijriDate::from_hijri(1500, 12, 30);
+    let _hd = HijriDate::from_hijri(1500, 12, 30);
 
     //assert_eq!(hd,hd_g);
 }
@@ -68,5 +68,5 @@ fn invalid() {
     //let hd_1 = HijriDate::from_hijri(1301, 06, 15);
     //let hd_1 = HijriDate::from_hijri(1401, 06, 1500);
     //let hd_g = HijriDate::from_gr(2077, 11 ,16);
-    let hd_g = HijriDate::from_gr(1935, 11, 16);
+    let _hd_g = HijriDate::from_gr(1935, 11, 16);
 }

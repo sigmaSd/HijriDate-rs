@@ -84,7 +84,7 @@ mod umalqura;
 use umalqura::*;
 mod umalqura_array;
 
-use arabic_reshaper::arabic_reshape_l;
+use arabic_reshaper::arabic_reshape;
 
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
@@ -111,7 +111,7 @@ static MONTH_DICT: Lazy<HashMap<usize, String>> = Lazy::new(|| {
         (12, "ذو الحجة"),
     ]
     .iter()
-    .map(|(n, s)| (*n, arabic_reshape_l(s)))
+    .map(|(n, s)| (*n, arabic_reshape(s)))
     .collect()
 });
 static DAY_DICT: Lazy<HashMap<String, String>> = Lazy::new(|| {
@@ -125,7 +125,7 @@ static DAY_DICT: Lazy<HashMap<String, String>> = Lazy::new(|| {
         ("Friday", "الجمعة"),
     ]
     .iter()
-    .map(|(e, a)| ((*e).to_string(), arabic_reshape_l(a)))
+    .map(|(e, a)| ((*e).to_string(), arabic_reshape(a)))
     .collect()
 });
 
@@ -341,7 +341,10 @@ fn valid_greorian_date(year_gr: usize, month_gr: usize, day_gr: usize) {
     }
     //hack to cmp to max min ; should be replaced by a proper way
     if year_gr < 1938 {
-        panic!("minumum handled gregorian year is 1938");
+        panic!(
+            "minumum handled gregorian year is 1938, input year: {}",
+            year_gr
+        );
     }
     if year_gr > 2076 {
         panic!("maximum handled gregorian year is 2076");
