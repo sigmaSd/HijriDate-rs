@@ -1,12 +1,12 @@
 // In the name of Allah
 
-//! # HijriDate-rs 
+//! # HijriDate-rs
 //!
 //! Convert between hijri and gregorian date.
 //!
 //! The algorithm used to convert between dates is limited to:
 //!
-//! ```text     
+//! ```text
 //! minimum handled hijri year = 1356
 //! maximum handled hijri year = 1500
 //!
@@ -71,7 +71,7 @@
 //!  *substract a day from an other to get a duration*
 //!
 //! ```rust
-//! extern crate hijri_date;    
+//! extern crate hijri_date;
 //! use hijri_date::{Duration,HijriDate};
 //!
 //! let hd_1 = HijriDate::from_hijri(1356, 06, 15);
@@ -84,23 +84,19 @@ mod umalqura;
 use umalqura::*;
 mod umalqura_array;
 
-#[macro_use]
-extern crate lazy_static;
-
-extern crate arabic_reshaper;
 use arabic_reshaper::arabic_reshape_l;
 
-extern crate chrono;
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
 
+use once_cell::sync::Lazy;
 use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::fmt;
 use std::ops::{Add, Sub};
 
-lazy_static! {
-    static ref month_dict: HashMap<usize, String> = [
+static MONTH_DICT: Lazy<HashMap<usize, String>> = Lazy::new(|| {
+    [
         (1, "محرم"),
         (2, "صفر"),
         (3, "ربيع الأول"),
@@ -112,24 +108,26 @@ lazy_static! {
         (9, "رمضان"),
         (10, "شوال"),
         (11, "ذو القعدة"),
-        (12, "ذو الحجة")
+        (12, "ذو الحجة"),
     ]
-        .into_iter()
-        .map(|(n, s)| (*n, arabic_reshape_l(s)))
-        .collect();
-    static ref day_dict: HashMap<String, String> = [
+    .iter()
+    .map(|(n, s)| (*n, arabic_reshape_l(s)))
+    .collect()
+});
+static DAY_DICT: Lazy<HashMap<String, String>> = Lazy::new(|| {
+    [
         ("Saturday", "السبت"),
         ("Sunday", "الاحد"),
         ("Monday", "الاثنين"),
         ("Tuesday", "الثلاثاء"),
         ("Wednesday", "الاربعاء"),
         ("Thursday", "الخميس"),
-        ("Friday", "الجمعة")
+        ("Friday", "الجمعة"),
     ]
-        .iter()
-        .map(|(e, a)| (e.to_string(), arabic_reshape_l(a)))
-        .collect();
-}
+    .iter()
+    .map(|(e, a)| ((*e).to_string(), arabic_reshape_l(a)))
+    .collect()
+});
 
 ///Main structure.
 ///  - Contains numeric value of hijri and gregorian dates plus hijri month and day names.
@@ -200,7 +198,7 @@ impl HijriDate {
     pub fn from_hijri(year: usize, month: usize, day: usize) -> Self {
         valid_hijri_date(year, month, day);
 
-        let month_name = month_dict[&month].clone();
+        let month_name = MONTH_DICT[&month].clone();
         let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day);
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
@@ -209,7 +207,7 @@ impl HijriDate {
             panic!("Wrong gegorean date foramt")
         };
         let day_name_en = date_gr.format("%A").to_string();
-        let day_name = day_dict[&day_name_en].clone();
+        let day_name = DAY_DICT[&day_name_en].clone();
         let month_name_en = date_gr.format("%B").to_string();
         let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
 
@@ -242,10 +240,10 @@ impl HijriDate {
         };
 
         let (year, month, day, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
-        let month_name = month_dict[&month].clone();
+        let month_name = MONTH_DICT[&month].clone();
 
         let day_name_en = date_gr.format("%A").to_string();
-        let day_name = day_dict[&day_name_en].clone();
+        let day_name = DAY_DICT[&day_name_en].clone();
         let month_name_en = date_gr.format("%B").to_string();
 
         Self {
@@ -296,7 +294,7 @@ impl HijriDate {
     ///     %l              hijri_month_len
     ///
     ///        gregorian
-    ///     
+    ///
     ///     %gY             gregorian_year
     ///     %gm             gregorian_month
     ///     %gd             gregorian_day

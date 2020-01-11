@@ -53,13 +53,13 @@ fn add_sub() {
 fn sub_day() {
     let hd_1 = HijriDate::from_hijri(1356, 06, 15);
     let hd_2 = HijriDate::from_hijri(1356, 06, 7);
-    assert_eq!(hd_1-hd_2,Duration::days(8));
+    assert_eq!(hd_1 - hd_2, Duration::days(8));
 }
 
 #[test]
 fn fmt() {
     let hd_2 = HijriDate::from_hijri(1356, 06, 7);
-    assert_eq!("1356-6-7",hd_2.format("%Y-%m-%d") );
+    assert_eq!("1356-6-7", hd_2.format("%Y-%m-%d"));
 }
 
 #[test]

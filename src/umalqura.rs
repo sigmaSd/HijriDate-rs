@@ -1,4 +1,4 @@
-use umalqura_array::*;
+use crate::umalqura_array::*;
 
 pub fn gegorean_to_hijri(
     mut year_gr: usize,
@@ -49,6 +49,7 @@ pub fn hijri_to_gregorian(year: usize, month: usize, day: usize) -> (usize, usiz
     julian_to_gregorian(cjdn as f64)
 }
 
+#[allow(clippy::many_single_char_names)]
 fn julian_to_gregorian(cjdn: f64) -> (usize, usize, usize) {
     //source from: http://keith-wood.name/calendars.html
 
