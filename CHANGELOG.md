@@ -1,3 +1,6 @@
+**0.3.2**
+- Hide internal bail macro from public API
+
 **0.3.1**
 - Remove duplicate verifications
 
