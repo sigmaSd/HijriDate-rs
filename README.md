@@ -1,4 +1,4 @@
- # HijriDate-rs 
+ # HijriDate-rs
 
 [Documentation](https://docs.rs/hijri_date/)
 
@@ -19,7 +19,6 @@ Convert between hijri and gregorian date.
  *convert to gregorian*
 
  ```rust
- extern crate hijri_date;
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_hijri(1439,11,19);
@@ -29,7 +28,6 @@ Convert between hijri and gregorian date.
  *convert to hijri*
 
  ```rust
- extern crate hijri_date;
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_gr(2000,07,31);
@@ -39,7 +37,6 @@ Convert between hijri and gregorian date.
  *hijri day and month name*
 
  ```rust
- extern crate hijri_date;
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_hijri(1439,11,18);
@@ -49,7 +46,6 @@ Convert between hijri and gregorian date.
  *compare dates*
 
  ```rust
- extern crate hijri_date;
  use hijri_date::HijriDate;
 
  let hd_1 = HijriDate::from_hijri(1500, 12, 30);
@@ -57,10 +53,9 @@ Convert between hijri and gregorian date.
  assert!(hd_1 > hd_2);
  ```
 
-  *substract duration from a day*
+  *subtract duration from a day*
 
  ```rust
- extern crate hijri_date;
  use hijri_date::{Duration,HijriDate};
 
  let hd_1 = HijriDate::from_hijri(1420, 06, 15);
@@ -68,10 +63,9 @@ Convert between hijri and gregorian date.
  assert_eq!(hd_1 - Duration::days(16), hd_2);
  ```
 
-  *substract a day from an other to get a duration*
+  *subtract a day from an other to get a duration*
 
  ```rust
- extern crate hijri_date;    
  use hijri_date::{Duration,HijriDate};
 
  let hd_1 = HijriDate::from_hijri(1356, 06, 15);
@@ -79,9 +73,9 @@ Convert between hijri and gregorian date.
  assert_eq!(hd_1-hd_2,Duration::days(8));
  ```
 
- *formating guide*
+ *formatting guide*
 
-    
+
         hijri
 
         %Y              hijri_year
@@ -92,13 +86,13 @@ Convert between hijri and gregorian date.
         %l              hijri_month_len
 
         gregorian
-        
+
         %gY             gregorian_year
         %gm             gregorian_month
         %gd             gregorian_day
         %gD             gregorian_day_name
         %gM             gregorian_month_name
-    
+
 
 
 # Credits
@@ -106,7 +100,7 @@ I translated the python version https://github.com/tytkal/python-hijiri-ummalqur
 
 **Original algorithm author**
 
-Suhail Alkowaileet 
+Suhail Alkowaileet
 
 **Python version author**
 
