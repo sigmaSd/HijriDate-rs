@@ -194,8 +194,9 @@ impl PartialOrd for HijriDate {
 impl HijriDate {
     /// get data from hijri date
     pub fn from_hijri(year: usize, month: usize, day: usize) -> Result<Self, String> {
+        valid_hijri_date(year, month, day)?;
         let month_name = MONTH_DICT[&month].clone();
-        let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day)?;
+        let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day);
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
             Date::<Utc>::from_utc(date_gr, Utc)
@@ -205,7 +206,7 @@ impl HijriDate {
         let day_name_en = date_gr.format("%A").to_string();
         let day_name = DAY_DICT[&day_name_en].clone();
         let month_name_en = date_gr.format("%B").to_string();
-        let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr)?;
+        let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
 
         Ok(Self {
             day,
@@ -226,6 +227,7 @@ impl HijriDate {
     }
     /// get data from gregorian date.
     pub fn from_gr(year_gr: usize, month_gr: usize, day_gr: usize) -> Result<Self, String> {
+        valid_greorian_date(year_gr, month_gr, day_gr)?;
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
             Date::<Utc>::from_utc(date_gr, Utc)
@@ -233,7 +235,7 @@ impl HijriDate {
             bail!("Wrong gegorean date foramt")
         };
 
-        let (year, month, day, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr)?;
+        let (year, month, day, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
         let month_name = MONTH_DICT[&month].clone();
 
         let day_name_en = date_gr.format("%A").to_string();
