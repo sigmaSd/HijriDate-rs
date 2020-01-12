@@ -84,8 +84,6 @@ mod umalqura;
 use umalqura::*;
 mod umalqura_array;
 
-use arabic_reshaper::arabic_reshape;
-
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
 
@@ -111,7 +109,7 @@ static MONTH_DICT: Lazy<HashMap<usize, String>> = Lazy::new(|| {
         (12, "ذو الحجة"),
     ]
     .iter()
-    .map(|(n, s)| (*n, arabic_reshape(s)))
+    .map(|(i, n)| (*i, (*n).to_string()))
     .collect()
 });
 static DAY_DICT: Lazy<HashMap<String, String>> = Lazy::new(|| {
@@ -125,10 +123,9 @@ static DAY_DICT: Lazy<HashMap<String, String>> = Lazy::new(|| {
         ("Friday", "الجمعة"),
     ]
     .iter()
-    .map(|(e, a)| ((*e).to_string(), arabic_reshape(a)))
+    .map(|(ng, n)| ((*ng).to_string(), (*n).to_string()))
     .collect()
 });
-
 ///Main structure.
 ///  - Contains numeric value of hijri and gregorian dates plus hijri month and day names.
 ///  - Hijri names dosent have suffix, example (day,month,year,..)

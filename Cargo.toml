@@ -1,6 +1,6 @@
 [package]
 name = "hijri_date"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Nbiba Bedis <bedisnbiba@gmail.com>"]
 readme = "README.md"
 description = "provides functionality for conversion between hijri and gregorian calander"
@@ -10,5 +10,4 @@ edition = "2018"
 
 [dependencies]
 chrono = "0.4.10"
-arabic_reshaper = "0.2.0"
 once_cell = "1.2.0"
