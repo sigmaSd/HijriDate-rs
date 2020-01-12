@@ -1,3 +1,6 @@
+**0.3.0**
+- Handle all errors !-> API slightly modified to return Result where its necessary
+
 **0.2.2**
 - Removed arabic_reshaper dependency, the user should be resopnsible of reshaping characters if needed
 
