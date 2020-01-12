@@ -8,7 +8,7 @@ Convert between hijri and gregorian date.
 
  ```     
  minimum handled hijri year = 1356
- maximum handled hijri year = 1500
+ maximum handled hijri year = 1499
 
  minimum handled gregorian year = 1938
  maximum handled gregorian year = 2076
