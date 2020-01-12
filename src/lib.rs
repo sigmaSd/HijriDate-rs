@@ -74,10 +74,12 @@
 //! ```
 //!
 
-mod umalqura;
-use umalqura::*;
-mod umalqura_array;
+#[macro_use]
 mod utils;
+
+use umalqura::*;
+mod umalqura;
+mod umalqura_array;
 
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};

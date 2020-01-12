@@ -4,7 +4,7 @@ pub fn umalqura_index(mcjdn: f64) -> Result<usize, String> {
             return Ok(i);
         }
     }
-    crate::bail!("Something went wrong in the algorithm")
+    bail!("Something went wrong in the algorithm")
 }
 pub const UMALQURA_DAT: [usize; 1741] = [
     28607, 28636, 28665, 28695, 28724, 28754, 28783, 28813, 28843, 28872, 28901, 28931, 28960,
