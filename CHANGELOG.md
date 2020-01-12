@@ -1,3 +1,6 @@
+**0.3.1**
+- Remove duplicate verifications
+
 **0.3.0**
 - Handle all errors !-> API slightly modified to return Result where its necessary
 
