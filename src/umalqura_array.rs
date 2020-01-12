@@ -1,10 +1,10 @@
-pub fn umalqura_index(mcjdn: f64) -> usize {
+pub fn umalqura_index(mcjdn: f64) -> Result<usize, String> {
     for (i, umalqura) in UMALQURA_DAT.iter().enumerate() {
         if *umalqura as f64 > mcjdn {
-            return i;
+            return Ok(i);
         }
     }
-    panic!("Something went wrong in the algorithm")
+    crate::bail!("Something went wrong in the algorithm")
 }
 pub const UMALQURA_DAT: [usize; 1741] = [
     28607, 28636, 28665, 28695, 28724, 28754, 28783, 28813, 28843, 28872, 28901, 28931, 28960,

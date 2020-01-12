@@ -4,11 +4,12 @@ pub fn gegorean_to_hijri(
     mut year_gr: usize,
     mut month_gr: usize,
     day_gr: usize,
-) -> (usize, usize, usize, usize) {
+) -> Result<(usize, usize, usize, usize), String> {
     //This code the modified version of R.H. van Gent Code, it can be found at http://www.staff.science.uu.nl/~gent0113/islam/ummalqura.htm
 
     //append January and February to the previous year (i.e. regard March as
     // the first month of the year in order to simplify leapday corrections)
+    crate::valid_greorian_date(year_gr, month_gr, day_gr)?;
 
     if month_gr < 3 {
         year_gr -= 1;
@@ -26,7 +27,7 @@ pub fn gegorean_to_hijri(
     // compute Modified Chronological Julian Day Number (MCJDN)
     let mcjdn = cjdn - 2_400_000.0;
 
-    let index = umalqura_index(mcjdn);
+    let index = umalqura_index(mcjdn)?;
 
     //compute and output the Umm al-Qura calendar date
     let iln = index + 16260;
@@ -36,17 +37,22 @@ pub fn gegorean_to_hijri(
     let id = mcjdn - UMALQURA_DAT[index - 1] as f64 + 1.0;
     let ml = UMALQURA_DAT[index] - UMALQURA_DAT[index - 1];
 
-    (iy, im, id as usize, ml)
+    Ok((iy, im, id as usize, ml))
 }
 
-pub fn hijri_to_gregorian(year: usize, month: usize, day: usize) -> (usize, usize, usize) {
+pub fn hijri_to_gregorian(
+    year: usize,
+    month: usize,
+    day: usize,
+) -> Result<(usize, usize, usize), String> {
+    crate::valid_hijri_date(year, month, day)?;
     let ii = year - 1;
     let iln = (ii * 12) + 1 + (month - 1);
     let i: usize = iln - 16260;
     let mcjdn = day + UMALQURA_DAT[i - 1] - 1;
     let cjdn = mcjdn + 2_400_000;
 
-    julian_to_gregorian(cjdn as f64)
+    Ok(julian_to_gregorian(cjdn as f64))
 }
 
 #[allow(clippy::many_single_char_names)]

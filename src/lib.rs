@@ -19,63 +19,57 @@
 //! *convert to gregorian*
 //!
 //! ```rust
-//! extern crate hijri_date;
 //! use hijri_date::HijriDate;
 //!
-//! let hd = HijriDate::from_hijri(1439,11,19);
+//! let hd = HijriDate::from_hijri(1439,11,19).unwrap();
 //! assert_eq!((2018,8,1),(hd.year_gr,hd.month_gr,hd.day_gr));
 //! ```
 //!
 //! *convert to hijri*
 //!
 //! ```rust
-//! extern crate hijri_date;
 //! use hijri_date::HijriDate;
 //!
-//! let hd = HijriDate::from_gr(2000,07,31);
+//! let hd = HijriDate::from_gr(2000,07,31).unwrap();
 //! assert_eq!((1421,4,29),(hd.year,hd.month,hd.day));
 //! ```
 //!
 //! *hijri day and month name*
 //!
 //! ```rust
-//! extern crate hijri_date;
 //! use hijri_date::HijriDate;
 //!
-//! let hd = HijriDate::from_hijri(1439,11,18);
+//! let hd = HijriDate::from_hijri(1439,11,18).unwrap();
 //! println!("{}",hd.format("%Y %M %D"));
 //! ```
 //!
 //! *compare dates*
 //!
 //! ```rust
-//! extern crate hijri_date;
 //! use hijri_date::HijriDate;
 //!
-//! let hd_1 = HijriDate::from_hijri(1500, 12, 30);
-//! let hd_2 = HijriDate::from_hijri(1356, 1, 1);
+//! let hd_1 = HijriDate::from_hijri(1400, 12, 30);
+//! let hd_2 = HijriDate::from_hijri(1357, 1, 1);
 //! assert!(hd_1 > hd_2);
 //! ```
 //!
 //!  *substract duration from a day*
 //!
 //! ```rust
-//! extern crate hijri_date;
 //! use hijri_date::{Duration,HijriDate};
 //!
-//! let hd_1 = HijriDate::from_hijri(1420, 06, 15);
-//! let hd_2 = HijriDate::from_hijri(1420, 05, 29);
+//! let hd_1 = HijriDate::from_hijri(1420, 06, 15).unwrap();
+//! let hd_2 = HijriDate::from_hijri(1420, 05, 29).unwrap();
 //! assert_eq!(hd_1 - Duration::days(16), hd_2);
 //! ```
 //!
 //!  *substract a day from an other to get a duration*
 //!
 //! ```rust
-//! extern crate hijri_date;
 //! use hijri_date::{Duration,HijriDate};
 //!
-//! let hd_1 = HijriDate::from_hijri(1356, 06, 15);
-//! let hd_2 = HijriDate::from_hijri(1356, 06, 7);
+//! let hd_1 = HijriDate::from_hijri(1358, 06, 15).unwrap();
+//! let hd_2 = HijriDate::from_hijri(1358, 06, 7).unwrap();
 //! assert_eq!(hd_1-hd_2,Duration::days(8));
 //! ```
 //!
@@ -83,6 +77,7 @@
 mod umalqura;
 use umalqura::*;
 mod umalqura_array;
+mod utils;
 
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
@@ -163,7 +158,10 @@ impl Add<Duration> for HijriDate {
     type Output = HijriDate;
 
     fn add(self, other: Duration) -> HijriDate {
-        HijriDate::chrno_to_hijri(self.date_gr + other)
+        // shouldn't fail
+        let hijri_date = HijriDate::chrno_to_hijri(self.date_gr + other);
+        assert!(hijri_date.is_ok());
+        hijri_date.unwrap()
     }
 }
 
@@ -171,7 +169,10 @@ impl Sub<Duration> for HijriDate {
     type Output = HijriDate;
 
     fn sub(self, other: Duration) -> HijriDate {
-        HijriDate::chrno_to_hijri(self.date_gr - other)
+        // shouldn't fail
+        let hijri_date = HijriDate::chrno_to_hijri(self.date_gr - other);
+        assert!(hijri_date.is_ok());
+        hijri_date.unwrap()
     }
 }
 
@@ -192,23 +193,21 @@ impl PartialOrd for HijriDate {
 
 impl HijriDate {
     /// get data from hijri date
-    pub fn from_hijri(year: usize, month: usize, day: usize) -> Self {
-        valid_hijri_date(year, month, day);
-
+    pub fn from_hijri(year: usize, month: usize, day: usize) -> Result<Self, String> {
         let month_name = MONTH_DICT[&month].clone();
-        let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day);
+        let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day)?;
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
             Date::<Utc>::from_utc(date_gr, Utc)
         } else {
-            panic!("Wrong gegorean date foramt")
+            bail!("Wrong gegorean date foramt")
         };
         let day_name_en = date_gr.format("%A").to_string();
         let day_name = DAY_DICT[&day_name_en].clone();
         let month_name_en = date_gr.format("%B").to_string();
-        let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
+        let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr)?;
 
-        Self {
+        Ok(Self {
             day,
             month,
             month_len,
@@ -223,27 +222,25 @@ impl HijriDate {
             day_name_en,
             month_name_en,
             date_gr,
-        }
+        })
     }
     /// get data from gregorian date.
-    pub fn from_gr(year_gr: usize, month_gr: usize, day_gr: usize) -> Self {
-        valid_greorian_date(year_gr, month_gr, day_gr);
-
+    pub fn from_gr(year_gr: usize, month_gr: usize, day_gr: usize) -> Result<Self, String> {
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
             Date::<Utc>::from_utc(date_gr, Utc)
         } else {
-            panic!("Wrong gegorean date foramt")
+            bail!("Wrong gegorean date foramt")
         };
 
-        let (year, month, day, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
+        let (year, month, day, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr)?;
         let month_name = MONTH_DICT[&month].clone();
 
         let day_name_en = date_gr.format("%A").to_string();
         let day_name = DAY_DICT[&day_name_en].clone();
         let month_name_en = date_gr.format("%B").to_string();
 
-        Self {
+        Ok(Self {
             //hijri
             day,
             month,
@@ -259,21 +256,33 @@ impl HijriDate {
             day_name_en,
             month_name_en,
             date_gr,
-        }
+        })
     }
     /// get data from today's date.
     pub fn today() -> Self {
         let today = Utc::today();
 
-        Self::chrno_to_hijri(today)
+        // It shouldn't fail
+        let hijri_today = Self::chrno_to_hijri(today);
+        assert!(hijri_today.is_ok());
+        hijri_today.unwrap()
     }
 
     //helper method
-    fn chrno_to_hijri(date: Date<Utc>) -> Self {
+    fn chrno_to_hijri(date: Date<Utc>) -> Result<Self, String> {
         let (year_gr, month_gr, day_gr): (usize, usize, usize) = (
-            date.format("%Y").to_string().parse().unwrap(),
-            date.format("%m").to_string().parse().unwrap(),
-            date.format("%d").to_string().parse().unwrap(),
+            date.format("%Y")
+                .to_string()
+                .parse()
+                .map_err(|_| "Error parsing date")?,
+            date.format("%m")
+                .to_string()
+                .parse()
+                .map_err(|_| "Error parsing date")?,
+            date.format("%d")
+                .to_string()
+                .parse()
+                .map_err(|_| "Error parsing date")?,
         );
         HijriDate::from_gr(year_gr, month_gr, day_gr)
     }
@@ -313,37 +322,37 @@ impl HijriDate {
     }
 }
 
-fn valid_hijri_date(year: usize, month: usize, day: usize) {
+fn valid_hijri_date(year: usize, month: usize, day: usize) -> Result<(), String> {
     if month > 12 {
-        panic!("enter a valid month, Err m = {}", month);
+        bail!("enter a valid month, Err m = {}", month);
     }
     if day > 30 {
-        panic!("enter a valid day, Err d = {}", day);
+        bail!("enter a valid day, Err d = {}", day);
     }
-    //hack to cmp to max min ; should be replaced by a proper way
-    if year < 1356 {
-        panic!("minumum handled hijri year is 1356");
+    if year < 1357 {
+        bail!("minumum handled hijri year is 1357");
     }
-    if year > 1500 {
-        panic!("maximum handled hijri year is 1500");
+    if year > 1499 {
+        bail!("maximum handled hijri year is 1499");
     }
+    Ok(())
 }
 
-fn valid_greorian_date(year_gr: usize, month_gr: usize, day_gr: usize) {
+fn valid_greorian_date(year_gr: usize, month_gr: usize, day_gr: usize) -> Result<(), String> {
     if month_gr > 12 {
-        panic!("enter a valid month, Err m = {}", month_gr);
+        bail!("enter a valid month, Err m = {}", month_gr);
     }
     if day_gr > 31 {
-        panic!("enter a valid day, Err d = {}", day_gr);
+        bail!("enter a valid day, Err d = {}", day_gr);
     }
-    //hack to cmp to max min ; should be replaced by a proper way
     if year_gr < 1938 {
-        panic!(
+        bail!(
             "minumum handled gregorian year is 1938, input year: {}",
             year_gr
         );
     }
     if year_gr > 2076 {
-        panic!("maximum handled gregorian year is 2076");
+        bail!("maximum handled gregorian year is 2076");
     }
+    Ok(())
 }
