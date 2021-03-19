@@ -27,9 +27,7 @@ pub fn gegorean_to_hijri(
     let mcjdn = cjdn - 2_400_000.0;
 
     // should not fail
-    let index = umalqura_index(mcjdn);
-    assert!(index.is_ok());
-    let index = index.unwrap();
+    let index = umalqura_index(mcjdn).unwrap();
 
     //compute and output the Umm al-Qura calendar date
     let iln = index + 16260;
