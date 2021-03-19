@@ -309,7 +309,7 @@ impl HijriDate {
             .replace("%d", &self.day.to_string())
             .replace("%D", &self.day_name)
             .replace("%M", &self.month_name)
-            .replace("l", &self.month_len.to_string())
+            .replace("%l", &self.month_len.to_string())
             .replace("%gY", &self.year_gr.to_string())
             .replace("%gm", &self.month_gr.to_string())
             .replace("%gd", &self.day_gr.to_string())
