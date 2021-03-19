@@ -159,9 +159,7 @@ impl Add<Duration> for HijriDate {
 
     fn add(self, other: Duration) -> HijriDate {
         // shouldn't fail
-        let hijri_date = HijriDate::chrno_to_hijri(self.date_gr + other);
-        assert!(hijri_date.is_ok());
-        hijri_date.unwrap()
+        HijriDate::chrno_to_hijri(self.date_gr + other).unwrap()
     }
 }
 
@@ -170,9 +168,7 @@ impl Sub<Duration> for HijriDate {
 
     fn sub(self, other: Duration) -> HijriDate {
         // shouldn't fail
-        let hijri_date = HijriDate::chrno_to_hijri(self.date_gr - other);
-        assert!(hijri_date.is_ok());
-        hijri_date.unwrap()
+        HijriDate::chrno_to_hijri(self.date_gr - other).unwrap()
     }
 }
 
@@ -265,9 +261,7 @@ impl HijriDate {
         let today = Utc::today();
 
         // It shouldn't fail
-        let hijri_today = Self::chrno_to_hijri(today);
-        assert!(hijri_today.is_ok());
-        hijri_today.unwrap()
+        Self::chrno_to_hijri(today).unwrap()
     }
 
     //helper method
