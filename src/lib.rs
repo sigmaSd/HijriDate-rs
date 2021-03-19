@@ -84,43 +84,45 @@ mod umalqura_array;
 pub use chrono::Duration;
 use chrono::{Date, NaiveDate, Utc};
 
-use once_cell::sync::Lazy;
 use std::cmp::Ordering;
-use std::collections::HashMap;
 use std::fmt;
+use std::ops::Index;
 use std::ops::{Add, Sub};
 
-static MONTH_DICT: Lazy<HashMap<usize, &str>> = Lazy::new(|| {
-    vec![
-        (1, "محرم"),
-        (2, "صفر"),
-        (3, "ربيع الأول"),
-        (4, "ربيع الثاني"),
-        (5, "جمادي الأولى"),
-        (6, "جمادي الآخرة"),
-        (7, "رجب"),
-        (8, "شعبان"),
-        (9, "رمضان"),
-        (10, "شوال"),
-        (11, "ذو القعدة"),
-        (12, "ذو الحجة"),
-    ]
-    .into_iter()
-    .collect()
-});
-static DAY_DICT: Lazy<HashMap<&str, &str>> = Lazy::new(|| {
-    vec![
-        ("Saturday", "السبت"),
-        ("Sunday", "الاحد"),
-        ("Monday", "الاثنين"),
-        ("Tuesday", "الثلاثاء"),
-        ("Wednesday", "الاربعاء"),
-        ("Thursday", "الخميس"),
-        ("Friday", "الجمعة"),
-    ]
-    .into_iter()
-    .collect()
-});
+struct Map<T, U, const N: usize>([(T, U); N]);
+
+impl<T: PartialEq, U, const N: usize> Index<T> for Map<T, U, N> {
+    type Output = U;
+
+    fn index(&self, t: T) -> &Self::Output {
+        &self.0.iter().find(|elem| elem.0 == t).unwrap().1
+    }
+}
+
+static MONTH_DICT: &Map<usize, &str, 12> = &Map([
+    (1, "محرم"),
+    (2, "صفر"),
+    (3, "ربيع الأول"),
+    (4, "ربيع الثاني"),
+    (5, "جمادي الأولى"),
+    (6, "جمادي الآخرة"),
+    (7, "رجب"),
+    (8, "شعبان"),
+    (9, "رمضان"),
+    (10, "شوال"),
+    (11, "ذو القعدة"),
+    (12, "ذو الحجة"),
+]);
+
+static DAY_DICT: &Map<&str, &str, 7> = &Map([
+    ("Saturday", "السبت"),
+    ("Sunday", "الاحد"),
+    ("Monday", "الاثنين"),
+    ("Tuesday", "الثلاثاء"),
+    ("Wednesday", "الاربعاء"),
+    ("Thursday", "الخميس"),
+    ("Friday", "الجمعة"),
+]);
 ///Main structure.
 ///  - Contains numeric value of hijri and gregorian dates plus hijri month and day names.
 ///  - Hijri names dosent have suffix, example (day,month,year,..)
@@ -191,7 +193,7 @@ impl HijriDate {
     /// get data from hijri date
     pub fn from_hijri(year: usize, month: usize, day: usize) -> Result<Self, String> {
         valid_hijri_date(year, month, day)?;
-        let month_name = MONTH_DICT[&month].to_string();
+        let month_name = MONTH_DICT[month].to_string();
         let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day);
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
@@ -200,7 +202,7 @@ impl HijriDate {
             bail!("Wrong gegorean date foramt")
         };
         let day_name_en = date_gr.format("%A").to_string();
-        let day_name = DAY_DICT[day_name_en.as_str()].to_string();
+        let day_name = DAY_DICT[&day_name_en].to_string();
         let month_name_en = date_gr.format("%B").to_string();
         let (_, _, _, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
 
@@ -232,7 +234,7 @@ impl HijriDate {
         };
 
         let (year, month, day, month_len) = gegorean_to_hijri(year_gr, month_gr, day_gr);
-        let month_name = MONTH_DICT[&month].to_string();
+        let month_name = MONTH_DICT[month].to_string();
 
         let day_name_en = date_gr.format("%A").to_string();
         let day_name = DAY_DICT[day_name_en.as_str()].to_string();
