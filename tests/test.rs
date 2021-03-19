@@ -1,4 +1,3 @@
-extern crate hijri_date;
 use hijri_date::{Duration, HijriDate};
 
 #[test]
