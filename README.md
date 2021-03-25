@@ -14,6 +14,9 @@ Convert between hijri and gregorian date.
  maximum handled gregorian year = 2076
  ```
 
+## Minimum Rust version
+Starting version `0.4.0` the msrv is  **1.51**
+
  ## Usage
 
  *convert to gregorian*
