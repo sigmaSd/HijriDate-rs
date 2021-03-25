@@ -2,6 +2,7 @@
 - Bump msrv to 1.51 (for const generics)
 - Performance work
 - Bug fix
+- Removed once_cell dependency
 
 **0.3.2**
 - Hide internal bail macro from public API
