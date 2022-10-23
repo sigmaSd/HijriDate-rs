@@ -127,7 +127,7 @@ static DAY_DICT: &Map<&str, &str, 7> = &Map([
 ///  - Contains numeric value of hijri and gregorian dates plus hijri month and day names.
 ///  - Hijri names dosent have suffix, example (day,month,year,..)
 ///  - Gregorian names are denoted with `gr` or `en` suffix.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct HijriDate {
     //hijri
     pub day: usize,
