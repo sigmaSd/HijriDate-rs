@@ -1,3 +1,6 @@
+**0.4.1**
+- clippy
+
 **0.4.0**
 - Bump msrv to 1.51 (for const generics)
 - Performance work
