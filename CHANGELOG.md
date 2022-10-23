@@ -1,5 +1,8 @@
+**0.4.2**
+- Update deps
+
 **0.4.1**
-- clippy
+- Fix clippy
 
 **0.4.0**
 - Bump msrv to 1.51 (for const generics)

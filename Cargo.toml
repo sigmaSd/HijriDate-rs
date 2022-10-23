@@ -1,6 +1,6 @@
 [package]
 name = "hijri_date"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["Nbiba Bedis <bedisnbiba@gmail.com>"]
 readme = "README.md"
 description = "provides functionality for conversion between hijri and gregorian calander"
@@ -9,4 +9,4 @@ license = "MIT"
 edition = "2018"
 
 [dependencies]
-chrono = "0.4.19"
+chrono = "0.4.22"
