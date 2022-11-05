@@ -1,52 +1,44 @@
- # HijriDate-rs
+# HijriDate-rs
 
-[Documentation](https://docs.rs/hijri_date/)
+[![Released API docs](https://docs.rs/hijri_date/badge.svg)](https://docs.rs/hijri_date)
 
 Convert between hijri and gregorian date.
 
- The algorithm used to convert between dates is limited to:
+## Limits
 
- ```     
- minimum handled hijri year = 1356
- maximum handled hijri year = 1499
+The algorithm used has the following limits:
 
- minimum handled gregorian year = 1938
- maximum handled gregorian year = 2076
- ```
+|           | Minimum | Maximum |
+|-----------|---------|---------|
+| Hijri     | 1356    | 1499    |
+| Gregorian | 1938    | 2076    |
 
 ## Minimum Rust version
-Starting version `0.4.0` the msrv is  **1.51**
+From version `0.4.0` and onwards the MSRV is **1.51**
 
- ## Usage
+## Usage
 
- *convert to gregorian*
+### Conversion
+
+* Hijri → Gregorian
 
  ```rust
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_hijri(1439,11,19);
- assert_eq!((2018,8,1),(hd.year_gr,hd.month_gr,hd.day_gr));
+ assert_eq!((2018,8,1), (hd.year_gr, hd.month_gr, hd.day_gr));
  ```
 
- *convert to hijri*
+* Gregorian → Hijri
 
  ```rust
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_gr(2000,07,31);
- assert_eq!((1421,4,29),(hd.year,hd.month,hd.day));
+ assert_eq!((1421,4,29), (hd.year, hd.month, hd.day));
  ```
 
- *hijri day and month name*
-
- ```rust
- use hijri_date::HijriDate;
-
- let hd = HijriDate::from_hijri(1439,11,18);
- println!("{}",hd.format("%Y %M %D"));
- ```
-
- *compare dates*
+### Comparison
 
  ```rust
  use hijri_date::HijriDate;
@@ -56,7 +48,9 @@ Starting version `0.4.0` the msrv is  **1.51**
  assert!(hd_1 > hd_2);
  ```
 
-  *subtract duration from a day*
+### Misc
+
+* Subtract duration from a day
 
  ```rust
  use hijri_date::{Duration,HijriDate};
@@ -66,47 +60,58 @@ Starting version `0.4.0` the msrv is  **1.51**
  assert_eq!(hd_1 - Duration::days(16), hd_2);
  ```
 
-  *subtract a day from an other to get a duration*
+* Subtract a day from another to get a duration
 
  ```rust
  use hijri_date::{Duration,HijriDate};
 
  let hd_1 = HijriDate::from_hijri(1356, 06, 15);
  let hd_2 = HijriDate::from_hijri(1356, 06, 7);
- assert_eq!(hd_1-hd_2,Duration::days(8));
+ assert_eq!(hd_1 - hd_2, Duration::days(8));
  ```
 
- *formatting guide*
+### Formatting 
 
+ * Hijri day and month name
 
-        hijri
+ ```rust
+ use hijri_date::HijriDate;
 
-        %Y              hijri_year
-        %m              hijri_month
-        %d              hijri_day
-        %D              hijri_day_name
-        %M              hijri_month_name
-        %l              hijri_month_len
+ let hd = HijriDate::from_hijri(1439,11,18);
+ println!("{}", hd.format("%Y %M %D"));
+ ```
 
-        gregorian
+* Formatting guide
 
-        %gY             gregorian_year
-        %gm             gregorian_month
-        %gd             gregorian_day
-        %gD             gregorian_day_name
-        %gM             gregorian_month_name
+```
+hijri
 
+%Y              hijri_year
+%m              hijri_month
+%d              hijri_day
+%D              hijri_day_name
+%M              hijri_month_name
+%l              hijri_month_len
 
+gregorian
 
-# Credits
-I translated the python version https://github.com/tytkal/python-hijiri-ummalqura to rust.
+%gY             gregorian_year
+%gm             gregorian_month
+%gd             gregorian_day
+%gD             gregorian_day_name
+%gM             gregorian_month_name
+```
 
-**Original algorithm author**
+## Credits
 
-Suhail Alkowaileet
+I translated [Tytkal's Python library](https://github.com/tytkal/python-hijiri-ummalqura) to Rust.
 
-**Python version author**
+* **Original algorithm author**
 
-Khalid Al-hussayen
+  Suhail Alkowaileet
+
+* **Python version author**
+
+  Khalid Al-hussayen
 
 [Chrono](https://github.com/chronotope/chrono)
