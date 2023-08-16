@@ -110,11 +110,7 @@ To compile to Wasm run:
  cargo build --release --target wasm32-unknown-unknown
 ```
 
-Deno bindings are exposed at `deno`
-
-- to test run `deno run deno_mod.ts`
-- to build the bindings, compile to wasm then run `wasm-bindgen --target deno $CARGO_TARGET_DIR/wasm32-unknown-unknown/release/hijri_date.wasm --out-dir deno`
-
+Deno bindings are exposed, see `./deno` for more info
 
 ## Credits
 

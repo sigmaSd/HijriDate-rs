@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "build-wasm": "cd .. && cargo build --release --target wasm32-unknown-unknown",
+    "wasm-bindgen": "wasm-bindgen --target deno $CARGO_TARGET_DIR/wasm32-unknown-unknown/release/hijri_date.wasm --out-dir pkg",
+    "build": "deno task build-wasm && deno task wasm-bindgen"
+  }
+}

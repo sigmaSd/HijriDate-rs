@@ -388,11 +388,11 @@ const imports = {
         __wbindgen_object_drop_ref: function(arg0) {
             takeObject(arg0);
         },
-        __wbg_getTime_4cef70ce051eed5f: function(arg0) {
+        __wbg_getTime_5e2054f832d82ec9: function(arg0) {
             const ret = getObject(arg0).getTime();
             return ret;
         },
-        __wbg_new0_b2948bff0ec2a151: function() {
+        __wbg_new0_c0be7df4b6bd481f: function() {
             const ret = new Date();
             return addHeapObject(ret);
         },
