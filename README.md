@@ -2,7 +2,7 @@
 
 [Documentation](https://docs.rs/hijri_date/)
 
-Convert between hijri and gregorian date.
+Convert between hijri and gregorian date. (with wasm target)
 
  The algorithm used to convert between dates is limited to:
 
@@ -25,7 +25,7 @@ Starting version `0.4.0` the msrv is  **1.51**
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_hijri(1439,11,19);
- assert_eq!((2018,8,1),(hd.year_gr,hd.month_gr,hd.day_gr));
+ assert_eq!((2018,8,1),(hd.year_gr(),hd.month_gr(),hd.day_gr()));
  ```
 
  *convert to hijri*
@@ -34,7 +34,7 @@ Starting version `0.4.0` the msrv is  **1.51**
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_gr(2000,07,31);
- assert_eq!((1421,4,29),(hd.year,hd.month,hd.day));
+ assert_eq!((1421,4,29),(hd.year(),hd.month(),hd.day()));
  ```
 
  *hijri day and month name*
@@ -97,8 +97,20 @@ Starting version `0.4.0` the msrv is  **1.51**
         %gM             gregorian_month_name
 
 
+## Wasm
 
-# Credits
+To compile to Wasm run:
+
+```
+ cargo build --release --target wasm32-unknown-unknown
+```
+
+Deno bindings are exposed at `deno`
+
+- to test run `deno run deno_mod.ts`
+- to build the bindings, compile to wasm then run `wasm-bindgen --target deno $CARGO_TARGET_DIR/wasm32-unknown-unknown/release/hijri_date.wasm --out-dir deno`
+
+## Credits
 I translated the python version https://github.com/tytkal/python-hijiri-ummalqura to rust.
 
 **Original algorithm author**
