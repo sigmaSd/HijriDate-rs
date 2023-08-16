@@ -82,7 +82,7 @@ mod umalqura;
 mod umalqura_array;
 
 pub use chrono::Duration;
-use chrono::{Date, NaiveDate, Utc};
+use chrono::{NaiveDate, Utc};
 
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
@@ -148,7 +148,7 @@ pub struct HijriDate {
     day_name_en: String,
     month_name_en: String,
     // needed to ease trait impl(add,sub,partialeq..)
-    date_gr: Date<Utc>,
+    date_gr: NaiveDate,
 }
 
 impl fmt::Display for HijriDate {
@@ -269,7 +269,7 @@ impl HijriDate {
         let (year_gr, month_gr, day_gr) = hijri_to_gregorian(year, month, day);
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
-            Date::<Utc>::from_utc(date_gr, Utc)
+            date_gr
         } else {
             bail!("Wrong gegorean date foramt")
         };
@@ -300,7 +300,7 @@ impl HijriDate {
         valid_greorian_date(year_gr, month_gr, day_gr)?;
         let date_gr = format!("{}-{}-{}", year_gr, month_gr, day_gr);
         let date_gr = if let Ok(date_gr) = NaiveDate::parse_from_str(&date_gr, "%Y-%m-%d") {
-            Date::<Utc>::from_utc(date_gr, Utc)
+            date_gr
         } else {
             bail!("Wrong gegorean date foramt")
         };
@@ -332,14 +332,14 @@ impl HijriDate {
     }
     /// get data from today's date.
     pub fn today() -> Self {
-        let today = Utc::today();
+        let today = Utc::now().date_naive();
 
         // It shouldn't fail
         Self::chrno_to_hijri(today).unwrap()
     }
 
     //helper method
-    fn chrno_to_hijri(date: Date<Utc>) -> Result<Self, String> {
+    fn chrno_to_hijri(date: NaiveDate) -> Result<Self, String> {
         let (year_gr, month_gr, day_gr): (usize, usize, usize) = (
             date.format("%Y")
                 .to_string()
