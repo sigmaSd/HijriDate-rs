@@ -3,7 +3,7 @@
 ## Usage
 
 ```ts
-import { HijriDate } from "./pkg/hijri_date.js";
+import { HijriDate } from "https://github.com/sigmaSd/HijriDate-rs/raw/master/deno/pkg/hijri_date.js";
 
 const hijriDate = HijriDate.today();
 console.log(hijriDate.toString());
