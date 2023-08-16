@@ -26,7 +26,7 @@ From version `0.4.0` and onwards the MSRV is **1.51**
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_hijri(1439,11,19);
- assert_eq!((2018,8,1), (hd.year_gr, hd.month_gr, hd.day_gr));
+ assert_eq!((2018,8,1), (hd.year_gr(), hd.month_gr(), hd.day_gr()));
  ```
 
 * Gregorian → Hijri
@@ -35,7 +35,7 @@ From version `0.4.0` and onwards the MSRV is **1.51**
  use hijri_date::HijriDate;
 
  let hd = HijriDate::from_gr(2000,07,31);
- assert_eq!((1421,4,29), (hd.year, hd.month, hd.day));
+ assert_eq!((1421,4,29), (hd.year(), hd.month(), hd.day()));
  ```
 
 ### Comparison
