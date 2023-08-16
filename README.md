@@ -2,7 +2,7 @@
 
 [![Released API docs](https://docs.rs/hijri_date/badge.svg)](https://docs.rs/hijri_date)
 
-Convert between hijri and gregorian date.
+Convert between hijri and gregorian date. (with wasm target)
 
 ## Limits
 
@@ -101,6 +101,20 @@ gregorian
 %gD             gregorian_day_name
 %gM             gregorian_month_name
 ```
+
+## Wasm
+
+To compile to Wasm run:
+
+```
+ cargo build --release --target wasm32-unknown-unknown
+```
+
+Deno bindings are exposed at `deno`
+
+- to test run `deno run deno_mod.ts`
+- to build the bindings, compile to wasm then run `wasm-bindgen --target deno $CARGO_TARGET_DIR/wasm32-unknown-unknown/release/hijri_date.wasm --out-dir deno`
+
 
 ## Credits
 

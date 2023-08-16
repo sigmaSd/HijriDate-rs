@@ -3,11 +3,11 @@ use hijri_date::{Duration, HijriDate};
 #[test]
 fn dates() {
     let hd_g = HijriDate::from_gr(2000, 07, 31).unwrap();
-    let date = format!("{}-{}-{}", hd_g.year, hd_g.month, hd_g.day);
+    let date = format!("{}-{}-{}", hd_g.year(), hd_g.month(), hd_g.day());
     assert_eq!("1421-4-29", date);
 
     let hd = HijriDate::from_hijri(1400, 11, 19).unwrap();
-    let date = format!("{}-{}-{}", hd.year_gr, hd.month_gr, hd.day_gr);
+    let date = format!("{}-{}-{}", hd.year_gr(), hd.month_gr(), hd.day_gr());
     assert_eq!("1980-9-28", date);
 }
 #[test]
